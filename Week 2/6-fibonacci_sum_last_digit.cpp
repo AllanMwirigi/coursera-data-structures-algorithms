@@ -1,27 +1,33 @@
 #include <iostream>
 
-long long get_fibonacci_huge_naive(long long n, long long m);
+int fibonacci_sum_naive(long long n);
+int fibonacci_sum_last_digit(long long n);
 long long get_fibonacci_huge(long long n, long long m);
 long long getPisanoPeriodSize(long long n, long long m);
 long long get_fibonacci_last_digits(long long n, long long m);
 
 int main() {
-    long long n, m;
-    std::cin >> n >> m;
-    // std::cout << get_fibonacci_huge_naive(n, m) << '\n';
-    std::cout << get_fibonacci_huge(n, m) << '\n';
+    long long n = 0;
+    std::cin >> n;
+    // std::cout << fibonacci_sum_naive(n);
+    std::cout << fibonacci_sum_last_digit(n) << "\n";
 }
 
 /*
-    compute 𝐹𝑛 modulo 𝑚, where 𝑛 may be really huge: up to 10^14. 
-    For such values of 𝑛, an algorithm looping for 𝑛 iterations will not fit into one second for sure. 
-    Therefore we need to avoid such a loop.
-    We want to get the last digit(s) of the fibonacci number like in fibonacci_last_digit but m different
-    For any integer 𝑚 ≥ 2, the sequence 𝐹𝑛 mod 𝑚 is periodic. 
-    The period always starts with 01 and is known as Pisano period.
-    Therefore, to compute, say, 𝐹(2015) mod 3 we just need to find the remainder of 2015 when divided 
-    by 8 (period size). Since 2015 = 251 · 8 + 7, we conclude that 𝐹(2015) mod 3 = 𝐹(7) mod 3 = 1.
+    I have come up with the formula that Sum(n) = Fib(n+2) - 1
+    0 1 1 2 3  5  8 13 21 34  55 89  144 233 377  610  987 1597 2584 4181
+    0 1 2 4 7 12 20 33 54 88 143 232 376 609 986 1596 2583 4180
 */
+int fibonacci_sum_last_digit(long long n) {
+    long long m = 1000;
+    long long fib = get_fibonacci_huge(n+2, m) % 10;
+    if (fib == 0) {
+        return 9;
+    }
+    return fib - 1;
+}
+
+
 long long get_fibonacci_huge(long long n, long long m) {
     if (n <= 1)
         return n;
@@ -55,18 +61,20 @@ long long get_fibonacci_last_digits(long long n, long long m) {
     return f2;
 }
 
-long long get_fibonacci_huge_naive(long long n, long long m) {
+int fibonacci_sum_naive(long long n) {
     if (n <= 1)
         return n;
 
     long long previous = 0;
     long long current  = 1;
+    long long sum      = 1;
 
     for (long long i = 0; i < n - 1; ++i) {
         long long tmp_previous = previous;
         previous = current;
         current = tmp_previous + current;
+        sum += current;
     }
 
-    return current % m;
+    return sum % 10;
 }
