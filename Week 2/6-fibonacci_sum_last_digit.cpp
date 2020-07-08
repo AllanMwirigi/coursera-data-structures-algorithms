@@ -20,11 +20,11 @@ int main() {
 */
 int fibonacci_sum_last_digit(long long n) {
     long long m = 1000;
-    long long fib = get_fibonacci_huge(n+2, m) % 10;
-    if (fib == 0) {
+    long long sum = get_fibonacci_huge(n+2, m) % 10; // mod 10 because we need only a single digit
+    if (sum == 0) { // last digit is 0, so should be set to 9 when subtracted by 1
         return 9;
     }
-    return fib - 1;
+    return sum - 1;
 }
 
 
