@@ -14,9 +14,8 @@ using std::max;
 
 int compute_min_refills(int dist, int tank, vector<int> & stops) {
     // write your code here
-    // stops.insert(stops.begin(), 0); // add initial and final points to vector
-    // stops.push_back(dist);
-    if (tank > dist) {
+    
+    if (tank >= dist) {
         return 0; // no need to refuel
     }
     else if (stops.size() == 0 && tank < dist) {
@@ -31,6 +30,8 @@ int compute_min_refills(int dist, int tank, vector<int> & stops) {
          return -1;
     }
     else{
+        stops.insert(stops.begin(), 0); // add initial and final points to vector
+        stops.push_back(dist);
         int refills = 0;
         int fullTank = tank;
         int size = stops.size();
@@ -39,15 +40,18 @@ int compute_min_refills(int dist, int tank, vector<int> & stops) {
             // if (stops[i+1]-stops[i] <= tank) { // next stop can be reached at current tank level
             //     continue;
             // }
-            if (stops[i+1]-stops[i] <= tank) { // next stop can be reached at current tank level
+            int stopNow = stops[i], stopNext = stops[i+1];
+            int distToNext = stopNext - stopNow;
+            if (distToNext <= tank) { // next stop can be reached at current tank level
                 // tank = tank - stops[i]; 
-                tank = tank - stops[i+1] - stops[i]; 
+                tank = tank - distToNext; 
                 continue;
             }
             tank = fullTank; // need to refill tank
-            if (tank < stops[i+1]-stops[i]) { // if even after refilling cannot reach next stop
+            if (tank < distToNext) { // if even after refilling cannot reach next stop
                 return -1;
             }
+            tank = tank - distToNext; 
             refills += 1;
         }
         return refills;
