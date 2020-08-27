@@ -95,7 +95,7 @@ int64_t MaxPairwiseProductSlow(const vector<int>& numbers) {
 
 /* 
 Edge cases to look into if solutions failing:
- - equal values
+ - equal values/inputs
  - strings with single or few letters
  - integer overflow
  - time limit or ram exceeded
