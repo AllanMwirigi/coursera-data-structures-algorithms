@@ -51,14 +51,14 @@ int main() {
 
         if (next == ')' || next == ']' || next == '}') {
             if (opening_brackets_stack.empty()){
-                // if stack is empty, first bracket in string is a closing brace
+                // if stack is empty, this closing brace is unmatched
                 unmatchedPos = position;
                 break;
             }
             // if a closing bracket found, evaluate if equal to bracket at top of stack
             Bracket top = opening_brackets_stack.top();
-            bool equal = top.Matchc(next);
-            if (equal) {
+            bool match = top.Matchc(next);
+            if (match) {
                 opening_brackets_stack.pop(); // remove the bracket at top of stack, since it has been matched
             } else {
                 unmatchedPos = position; // position of unmatched closing bracket

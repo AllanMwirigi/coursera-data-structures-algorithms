@@ -36,7 +36,7 @@ public:
     void setParent(Node *theParent) {
       // having parent as a pointer allows it to be referenced/modified wherever it is i.e. updating its children
       parent = theParent;
-      parent->children.push_back(this);
+      parent->children.push_back(this); // updating its children
     }
 };
 
@@ -59,7 +59,7 @@ int main_with_large_stack_space() {
     std::cin >> parent_index;
     if (parent_index == -1) rootIndex = child_index;
     if (parent_index >= 0)
-      nodes[child_index].setParent(&nodes[parent_index]); // this is a non-root node, set its parent
+      nodes[child_index].setParent(&nodes[parent_index]); // this is a non-root node, set its parent; will also add this node as a child of this parent
     nodes[child_index].key = child_index;
   }
 
@@ -106,9 +106,11 @@ int getMaxHeight(Node root) {
    * */
 
   int height = 0;
-  std::queue<Node> nodeQueue; // queue the breadth first search
+  std::queue<Node> nodeQueue; // queue for the breadth first search
   nodeQueue.push(root);
-  // levelSize is 1 to account for the root node, tempSize holds the size of the next level
+  // levelSize is the number of nodes in a given level; used as a counter to check if we have reached the last node in a level, whereby height is incremented
+  // levelSize is decremented as we traverse the level i.e. if 5 nodes in level, levelSize decremented from 5 to 1
+  // levelSize is initially 1 to account for the root node, tempSize holds the size of the next level
   int levelSize = 1, tempSize = 0; 
 
   while (!nodeQueue.empty()) {
@@ -123,10 +125,11 @@ int getMaxHeight(Node root) {
       nodeQueue.push(child);
     }
 
-    // levelSize 1 implies that we have reached the last node in the level
-    // so make levelSize the size of the next level (tempSize), increment the height, reset tempSize
     // tempSize first needs to account for the current node's children since they are yet to be added
+    // tempSize holds the number of nodes in the next level; from adding the size of each of the current level's children i.e. tempSize += size
     if (levelSize == 1) {
+      // levelSize 1 implies that we have reached the last node in the level
+      // so make levelSize the size of the next level (tempSize), increment the height, reset tempSize
       tempSize += size;
       levelSize = tempSize;
       height ++;
