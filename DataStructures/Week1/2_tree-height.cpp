@@ -71,9 +71,11 @@ int main_with_large_stack_space() {
   return 0;
 }
 
+// g++ 2_tree-height.cpp -o bin/2_tree-height && bin/2_tree-height
 int main (int argc, char **argv)
 {
 #if defined(__unix__) || defined(__APPLE__)
+  // NOTE: not using recursion, so needn’t worry about stack overflow problems
   // Allow larger stack space
   const rlim_t kStackSize = 16 * 1024 * 1024;   // min stack size = 16 MB
   struct rlimit rl;
@@ -145,6 +147,7 @@ int getMaxHeight(Node root) {
   return height;
 }
 
+// probably shouldn't pass vector by value, use const & (by reference)
 int getMaxHeightNaive(int n, std::vector<Node> nodes) {
   // Replace this code with a faster implementation
   // evaluates the height of each node, large test cases fail e.g. est case 21 in tests folder
