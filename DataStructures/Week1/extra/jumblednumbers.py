@@ -28,19 +28,36 @@ def solution(line):
     ]
     val = ''
     for i, num in enumerate(numList):
+        # hasCh = True
+        # for ch in num:
+        #     if ch not in line:
+        #         hasCh = False
+        #         break
+        # if hasCh:
+        #     val += numDict[num]
+
+        
         hasCh = True
+        count = 0
         for ch in num:
             if ch not in line:
                 hasCh = False
+                count = 0
                 break
-        if hasCh:
-            val += numDict[num]
+            else:
+                count += line.count(ch)
+        
+        print(count)
+        if hasCh and count > 0:
+            if (count % len(num) == 0):
+                occurences = count / len(num)
+                val += (numDict[num] * occurences)
+
 
     return val
 
 for line in sys.stdin:
   print(solution(line))
-        
 
 
 
